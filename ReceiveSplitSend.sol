@@ -31,6 +31,8 @@ contract ReceiveSplitSend {
     receive() external payable {}
     // Note this function is coming after the amount received is set, i.e. (a) receive x, and now we allow x to be received
 
+
+/// This was your v1 when trying to get it to compile in Remix
     function sendPayment1(userAddress1 payable recipient) public {
         (bool success, ) = recipient.call{value: split}("");
         require(success, "Payment failed.");
@@ -39,6 +41,17 @@ contract ReceiveSplitSend {
     function sendPayment2(userAddress2 payable recipient) public {
         (bool success, ) = recipient.call{value: split}("");
         require(success, "Payment failed.");
+
+/// This was your v2 of the previous functions, when trying to get it to compile in Remix
+    function sendPayment1(address payable) public {
+        (bool success, ) = userAddress1.call{value: split}("");
+        require(success, "Payment failed.");
+    }
+
+    function sendPayment2(address payable) public {
+        (bool success, ) = userAddress2.call{value: split}("");
+        require(success, "Payment failed.");
+    }
 
 
 }
