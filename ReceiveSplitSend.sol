@@ -11,47 +11,30 @@ contract ReceiveSplitSend {
     address public userAddress1;
     address public userAddress2;
 
-    // Use the first address variable
-    function setAddress(address _newAddress1) public { 
-        userAddress1 = _newAddress; 
-    }
-    
-    // Use the first address variable
-    function setAddress(address _newAddress2) public { 
-        userAddress2 = _newAddress;
+    constructor() {
+        userAddress1 = 0x176be03A0573172697631C54edDAb037151a7202;
+        userAddress2 = 0xE70e7784Dd8200aB1527b3E8DA4903C0838a5FA3;
     }
 
     // Set how much ether is to be received by the contract. Note this is expressed in Wei (and you may need that bookmarked coverter)
-    uint256 amount = 200000000000000000; // 0.2 ether
+    uint256 amount = 100000000000000; // 0.0001 ether
     // You need to be able to work how to make this a variable, and set homehow
 
     uint256 split = amount / 2;
 
     // Implement the receive function, so the contract can receive ether from EOAs and other smart contracts
     receive() external payable {}
+
     // Note this function is coming after the amount received is set, i.e. (a) receive x, and now we allow x to be received
 
-
-/// This was your v1 when trying to get it to compile in Remix
-    function sendPayment1(userAddress1 payable recipient) public {
-        (bool success, ) = recipient.call{value: split}("");
-        require(success, "Payment failed.");
-    }
-
-    function sendPayment2(userAddress2 payable recipient) public {
-        (bool success, ) = recipient.call{value: split}("");
-        require(success, "Payment failed.");
-
-/// This was your v2 of the previous functions, when trying to get it to compile in Remix
-    function sendPayment1(address payable) public {
+    /// This is meant to use 1 function to sendPayment to mutiple addresses
+    function sendPayment(userAddress2) public {
         (bool success, ) = userAddress1.call{value: split}("");
         require(success, "Payment failed.");
-    }
-
-    function sendPayment2(address payable) public {
         (bool success, ) = userAddress2.call{value: split}("");
         require(success, "Payment failed.");
     }
-
-
 }
+
+// Still Not working. But Look to guide here (as it prompted some ideas https://stackoverflow.com/questions/68512911/sending-more-than-1-addresses-to-solidity-function)
+// And keep going back to the working ReceiveThenSend contract, to stick with what has worked.
